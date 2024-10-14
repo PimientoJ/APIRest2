@@ -28,7 +28,7 @@ app.use(fileupdates({
     createParentPath: true
 }));
 app.use(cors({
-    origin: ['http://localhost:4200'],
+    origin: ['http://localhost:4200, http://146.190.62.222'],
 
 }));
 
