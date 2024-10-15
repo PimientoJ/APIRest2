@@ -7,5 +7,6 @@ routerProcesos.post("/agregarProcesos/:idCal", ctrProceso.AgregarProceso);
 routerProcesos.put("/actualizarProcesos/:idCal/:idPro", ctrProceso.EditarProceso);
 routerProcesos.get("/datoDelProceso/:idCal/:idPro", ctrProceso.ObtenerDatoProceso);
 routerProcesos.delete("/eliminarProceso/:idCal/:idPro", ctrProceso.EliminarProceso);
+routerProcesos.get("/visualizarProceso", ctrProceso.listarproceso);
 
 module.exports = routerProcesos;

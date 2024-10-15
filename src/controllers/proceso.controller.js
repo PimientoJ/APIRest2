@@ -1,4 +1,15 @@
 const Calendario = require('../Models/Calendario');
+const Procesos = require('../Models/Procesos');
+
+exports.listarproceso = async(req, res) => {
+    try {
+        const proceso = await Procesos.find({});
+        res.json(proceso);
+    } catch (error) {
+        res.json(error);
+    }
+};
+
 
 exports.ObtenerProceso = async(req, res) => {
     try {
