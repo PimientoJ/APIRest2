@@ -116,3 +116,54 @@ exports.EditarProceso = async(req, res) => {
         res.status(500).json({ error });
     }
 }
+
+//Agregar un dato a la tabla de procesos 
+exports.agregarProcesoNuevo = async(req, res) => {
+    try {
+        const nombre = req.body;
+        const procesoExists = await Proceso.findOne({ nombre: req.body.nombre });
+
+        if (procesoExists) {
+            console.log("procesoExists", procesoExists.estado);
+            if (procesoExists.estado) {
+                res.json({ success: false, msj: 'El proceso ya existe' })
+            } else {
+                await Proceso.findByIdAndUpdate(procesoExists.id, { estado: true });
+                res.json({ success: true, msj: 'Datos del proceso registrado exitosamente' })
+            }
+
+        } else {
+            const nuevoDatoProceso = new Proceso(req.body);
+            await nuevoDatoProceso.save(); //Guarda en la base de datos
+            res.json({ success: true, msj: 'Datos del proceso registrado exitosamente' })
+        }
+
+    } catch (error) {
+        res.json(error);
+    }
+};
+
+//Metodo para eliminar datos de la tabla procesos
+exports.eliminarProceso = async(req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const eliminar = await Proceso.findByIdAndUpdate(id, { estado: false });
+        res.status(200).json({ msj: "Dato eliminado satisfactoriamente", isOk: true });
+    } catch (error) {
+        res.status(200).json("Error");
+    }
+};
+
+    //Actualizar el nombre del proceso
+    exports.actualizarProceso = async(req, res) => {
+        try {
+            const id = req.params.id;
+            const data = req.body;
+            await Proceso.findByIdAndUpdate(id, data);
+            res.json({ success: true, msj: "Se actualizado exitosamente" });
+        } catch (error) {
+            res.json(error);
+        }
+    
+    };

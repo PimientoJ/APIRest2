@@ -9,5 +9,5 @@ routerCalendar.get("/calendarioActivo", autorizarUsuario, ctrCalendar.obtenerDat
 //routerCalendar.put("/datosCalendarioProcesos/:id", ctrCalendar.AgregarDatoCalendarioProceso);
 routerCalendar.put("/actualizarCalendario/:id", ctrCalendar.actualizarDatoCalendario);
 //routerCalendar.delete("/eliminarCalendario/:id", ctrCalendar.eliminarDatoCalendario);
-
+routerCalendar.post("/registarCalendario", ctrCalendar.agregarCalendario);
 module.exports = routerCalendar;
