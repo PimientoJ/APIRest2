@@ -22,18 +22,31 @@ exports.obtenerDatosCalendarioActivo = async(req, res) => {
     }
 };
 //Métodos de administrador
-exports.agregarCalendario = async(req, res) => {
+exports.agregarCalendario = async (req, res) => {
     try {
+        
         const { periodo, año, proceso } = req.body;
         console.log(req.body);
 
-        const nuevoDatoCalendario = new Calendario(req.body);
+        const calendarData = {
+            periodo,
+            year: año,  // Renombramos 'año' a 'year'
+            proceso,
+        };
+        console.log(calendarData);
+
+        const nuevoDatoCalendario = new Calendario(calendarData);
         console.log(nuevoDatoCalendario);
-        await nuevoDatoCalendario.save(); //Guarda en la base de datos
-        res.json({ success: true, msj: 'Datos registrado exitosamente' });
+        await nuevoDatoCalendario.save(); // Guarda en la base de datos
+        res.json({ success: true, msj: 'Datos registrados con éxito' });
 
     } catch (error) {
-        res.json(error);
+        console.error('Error al guardar el calendario:', error); // Imprime el error en el servidor
+        res.status(500).json({
+            success: false,
+            msj: 'Hubo un error al registrar los datos. Intenta nuevamente más tarde.',
+            error: error.message || 'Error desconocido'
+        });
     }
 };
 //Metodo para agregar los procesos

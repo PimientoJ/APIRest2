@@ -2,6 +2,7 @@ const { Router } = require("express");
 const ctrProceso = require("../controllers/proceso.controller");
 const routerProcesos = Router();
 
+routerProcesos.get("/consultarProceso/:idProc", ctrProceso.findProceso);
 routerProcesos.get("/datosProcesos/:idCal", ctrProceso.ObtenerProceso);
 routerProcesos.post("/agregarProcesos/:idCal", ctrProceso.AgregarProceso);
 routerProcesos.put("/actualizarProcesos/:idCal/:idPro", ctrProceso.EditarProceso);

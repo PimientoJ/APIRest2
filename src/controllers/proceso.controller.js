@@ -3,13 +3,27 @@ const Procesos = require('../Models/Procesos');
 
 exports.listarproceso = async(req, res) => {
     try {
-        const proceso = await Procesos.find({});
+        const proceso = await Procesos.find({estado: true});
         res.json(proceso);
     } catch (error) {
         res.json(error);
     }
 };
 
+exports.findProceso = async(req, res) => {
+    try {
+        if (req.params.idProc) {
+            const idProc = req.params.idProc;
+            const proceso = await Procesos.findById(idProc);
+            res.json(proceso);
+        } else {
+            res.status(400).json({ error: 'Se debe enviar el id del proceso' });
+        }
+
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
 
 exports.ObtenerProceso = async(req, res) => {
     try {
@@ -121,19 +135,19 @@ exports.EditarProceso = async(req, res) => {
 exports.agregarProcesoNuevo = async(req, res) => {
     try {
         const nombre = req.body;
-        const procesoExists = await Proceso.findOne({ nombre: req.body.nombre });
+        const procesoExists = await Procesos.findOne({ nombre: req.body.nombre });
 
         if (procesoExists) {
             console.log("procesoExists", procesoExists.estado);
             if (procesoExists.estado) {
                 res.json({ success: false, msj: 'El proceso ya existe' })
             } else {
-                await Proceso.findByIdAndUpdate(procesoExists.id, { estado: true });
+                await Procesos.findByIdAndUpdate(procesoExists.id, { estado: true });
                 res.json({ success: true, msj: 'Datos del proceso registrado exitosamente' })
             }
 
         } else {
-            const nuevoDatoProceso = new Proceso(req.body);
+            const nuevoDatoProceso = new Procesos(req.body);
             await nuevoDatoProceso.save(); //Guarda en la base de datos
             res.json({ success: true, msj: 'Datos del proceso registrado exitosamente' })
         }
@@ -148,7 +162,7 @@ exports.eliminarProceso = async(req, res) => {
     try {
         const id = req.params.id;
         console.log(id);
-        const eliminar = await Proceso.findByIdAndUpdate(id, { estado: false });
+        const eliminar = await Procesos.findByIdAndUpdate(id, { estado: false });
         res.status(200).json({ msj: "Dato eliminado satisfactoriamente", isOk: true });
     } catch (error) {
         res.status(200).json("Error");
@@ -160,7 +174,7 @@ exports.eliminarProceso = async(req, res) => {
         try {
             const id = req.params.id;
             const data = req.body;
-            await Proceso.findByIdAndUpdate(id, data);
+            await Procesos.findByIdAndUpdate(id, data);
             res.json({ success: true, msj: "Se actualizado exitosamente" });
         } catch (error) {
             res.json(error);
